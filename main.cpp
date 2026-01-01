@@ -17,6 +17,7 @@ struct Order {
     int quantity;             // 5. Quantity
     double unitPrice;         // 6. Unit Price
     string orderDate;         // 7. Order Date
+    string phoneNumber;       // 8. Phone Number (Malaysia)
     double totalAmount;       // Derived: Quantity × Unit Price
     Order* next;              // For linked list
     
@@ -65,6 +66,7 @@ void pause();
 void freeMemory();
 void reloadData();
 string formatNumber(double num);
+string generateMalaysianPhone();
 
 int main() {
     
@@ -87,6 +89,15 @@ int main() {
             getline(ss, temp, '|'); newOrder->quantity = stoi(temp);
             getline(ss, temp, '|'); newOrder->unitPrice = stod(temp);
             getline(ss, newOrder->orderDate, '|');
+            
+            // Check if phone number exists in file, if not generate one
+            if(getline(ss, newOrder->phoneNumber, '|')) {
+                // Phone number exists in file
+            } else {
+                // Generate new phone number
+                newOrder->phoneNumber = generateMalaysianPhone();
+            }
+            
             newOrder->totalAmount = newOrder->quantity * newOrder->unitPrice;
             
             newOrder->next = orderList;
@@ -350,7 +361,8 @@ void saveToFile() {
              << current->productCategory << "|"
              << current->quantity << "|"
              << current->unitPrice << "|"
-             << current->orderDate << "\n";
+             << current->orderDate << "|"
+             << current->phoneNumber << "\n";
         current = current->next;
     }
     
@@ -383,6 +395,15 @@ void loadFromFile() {
         getline(ss, temp, '|'); newOrder->quantity = stoi(temp);
         getline(ss, temp, '|'); newOrder->unitPrice = stod(temp);
         getline(ss, newOrder->orderDate, '|');
+        
+        // Check if phone number exists in file, if not generate one
+        if(getline(ss, newOrder->phoneNumber, '|')) {
+            // Phone number exists in file
+        } else {
+            // Generate new phone number
+            newOrder->phoneNumber = generateMalaysianPhone();
+        }
+        
         newOrder->totalAmount = newOrder->quantity * newOrder->unitPrice;
         
         newOrder->next = orderList;
